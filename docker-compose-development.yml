@@ -1,0 +1,158 @@
+services:
+  backend:
+    container_name: backend
+    image: backend
+    build:
+      context: .
+      dockerfile: docker/local.Dockerfile
+    command: >
+      sh -c "python manage.py makemigrations &&
+      python manage.py migrate &&
+      python manage.py collectstatic --no-input &&
+      python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - envs/development/.env.backend
+    depends_on:
+      - database
+      - redis
+    networks:
+      - main
+    restart: always
+
+  database:
+    container_name: database
+    image: postgres:16.0
+    ports:
+      - "5432:5432"
+    env_file:
+      - envs/development/.env.db
+    volumes:
+      - database:/var/lib/postgresql/data
+    networks:
+      - main
+    restart: always
+
+  redis:
+    container_name: redis
+    image: redis:7.2.4
+    ports:
+      - "6379:6379"
+    command: sh -c "redis-server --save 60 1 --loglevel warning"
+    networks:
+      - main
+    restart: always
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:management
+    ports:
+      - "5673:5672"
+      - "15672:15672"
+    networks:
+      - main
+    restart: always
+
+  worker:
+    container_name: worker
+    image: worker
+    build:
+      context: .
+      dockerfile: docker/local.Dockerfile
+    command: sh -c "celery -A config worker -l INFO"
+    volumes:
+      - ./:/app
+    env_file:
+      - envs/development/.env.backend
+    depends_on:
+      - rabbitmq
+      - backend
+    networks:
+      - main
+    restart: always
+
+  worker_beat:
+    container_name: worker_beat
+    image: worker_beat
+    build:
+      context: .
+      dockerfile: docker/local.Dockerfile
+    command: sh -c "celery -A config beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+    volumes:
+      - ./:/app
+    env_file:
+      - envs/development/.env.backend
+    depends_on:
+      - rabbitmq
+      - backend
+    networks:
+      - main
+    restart: always
+
+  frontend:
+    container_name: frontend
+    image: frontend
+    build:
+      context: frontend/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - main
+    restart: always
+
+  worker_flower:
+    container_name: worker_flower
+    image: mher/flower:2.0
+    ports:
+      - "5555:5555"
+    environment:
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672/
+    depends_on:
+      - worker
+      - worker_beat
+    networks:
+      - main
+    restart: always
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    depends_on:
+      - database
+    networks:
+      - main
+    restart: always
+
+  smtp4dev:
+    container_name: smtp4dev
+    image: rnwood/smtp4dev:v3
+    volumes:
+      - smtp4dev:/smtp4dev
+    ports:
+      - '5000:80'
+      - '25:25'
+      - '143:143'
+    environment:
+      - ServerOptions__HostName=smtp4dev
+    networks:
+      - main
+    restart: always
+
+volumes:
+  database:
+    name: database
+  smtp4dev:
+    name: smtp4dev
+
+networks:
+  main:
+    name: main

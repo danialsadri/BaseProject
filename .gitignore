@@ -1,0 +1,6 @@
+/media/
+/static/
+/venv/
+/.idea/
+/warning.log
+*__pycache__*

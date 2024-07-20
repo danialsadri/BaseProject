@@ -2,12 +2,12 @@
 
 #### clone repository
 ```sh
-git clone git@github.com:danialsadri/Project.git
+git clone git@github.com:danialsadri/BaseProject.git
 ```
 
 #### change directory
 ```sh
-cd Project
+cd BaseProject
 ```
 
 #### config docker compose for development

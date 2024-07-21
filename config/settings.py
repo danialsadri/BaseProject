@@ -8,7 +8,7 @@ SECRET_KEY = config('SECRET_KEY', cast=str)
 DEBUG = config('DEBUG', cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
 
-CORS_ALLOWED_ORIGINS = [
+CSRF_TRUSTED_ORIGINS  = [
     "http://localhost:3000",
 ]
 

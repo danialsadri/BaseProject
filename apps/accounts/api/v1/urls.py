@@ -4,7 +4,7 @@ from rest_framework_simplejwt.views import (
 )
 from . import views
 
-app_name = 'accounts_api'
+app_name = 'accounts'
 urlpatterns = [
     path('send-code/', views.SendCodeApiView.as_view(), name='send-code'),
     path('token/', views.LoginApiView.as_view(), name='token'),

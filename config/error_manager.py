@@ -32,7 +32,6 @@ class ErrorHandler:
             'invalid_phone': 'شماره تلفن معتبر نیست',
             'invalid_otp_code': 'کد امنیتی صحیح نمیباشد',
             'expired_otp_code': 'کد امنیتی منقضی شده است',
-            'invalid_user': 'کاربری با این مشخصات وجود ندارد',
             'not_is_active': 'حساب کاربری شما غیر فعال گردیده است',
         },
         401: {

@@ -1,16 +1,14 @@
-from drf_spectacular.utils import extend_schema
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import SendCodeSerializer, LoginSerializer
+from .serializers import SendCodeSerializer, LoginSerializer, UserDetailsSerializer
 
 
 class SendCodeApiView(APIView):
     permission_classes = [AllowAny]
 
-    @extend_schema(request=SendCodeSerializer)
     def post(self, request):
         data = self.request.data
         serializer = SendCodeSerializer(data=data)
@@ -26,7 +24,6 @@ class SendCodeApiView(APIView):
 class LoginApiView(APIView):
     permission_classes = [AllowAny]
 
-    @extend_schema(request=LoginSerializer)
     def post(self, request):
         data = self.request.data
         serializer = LoginSerializer(data=data)
@@ -40,3 +37,11 @@ class LoginApiView(APIView):
                 'access': str(refresh.access_token),
             }
             return Response(response, status=status.HTTP_201_CREATED)
+
+
+class UserDetailsApiView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = UserDetailsSerializer(instance=self.request.user, context={'request': request})
+        return Response(data=serializer.data, status=status.HTTP_200_OK)

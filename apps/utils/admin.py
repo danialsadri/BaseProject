@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin.models import LogEntry
 from django.contrib.sessions.models import Session
 from jalali_date import datetime2jalali, date2jalali
-from .models import Image
+from .models import ImageModel
 
 
 @admin.register(Session)
@@ -37,6 +37,6 @@ class LogEntryAdmin(admin.ModelAdmin):
         return datetime2jalali(obj.action_time).strftime('%H:%M')
 
 
-@admin.register(Image)
+@admin.register(ImageModel)
 class ImageAdmin(admin.ModelAdmin):
     list_filter = ['created_at']

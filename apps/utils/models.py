@@ -37,7 +37,7 @@ class BaseModel(models.Model):
         return obj.exists(), obj.first()
 
 
-class Image(BaseModel):
+class ImageModel(BaseModel):
     image = models.ImageField(upload_to=image_upload_to, verbose_name='تصویر')
 
     class Meta:

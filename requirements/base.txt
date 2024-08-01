@@ -20,14 +20,12 @@ distlib==0.3.6
 Django==4.2.10
 django-celery-beat==2.6.0
 django-cors-headers==4.3.1
-django-debug-toolbar==4.4.2
 django-filter==24.2
 django-jalali-date==1.1.2
 django-redis==5.4.0
 django-timezone-field==6.1.0
 djangorestframework==3.15.1
 djangorestframework-simplejwt==5.3.1
-drf-spectacular==0.27.2
 dulwich==0.21.3
 filelock==3.9.0
 gunicorn==22.0.0

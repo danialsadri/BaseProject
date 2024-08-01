@@ -4,7 +4,6 @@ from io import BytesIO
 from PIL import Image as PilImage
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUploadedFile
-from apps.accounts.models import User
 from config.error_manager import ErrorHandler
 
 
@@ -38,13 +37,3 @@ def validate_phone(value):
 def validate_otp_code(value):
     if len(str(value)) != 4:
         raise ErrorHandler.get_error_exception(400, "invalid_otp_code")
-
-
-def check_if_phone_number_exists(value):
-    if not User.objects.filter(phone_number=value).exists():
-        raise ErrorHandler.get_error_exception(400, "invalid_user")
-
-
-def check_if_national_code_exists(value):
-    if not User.objects.filter(national_code=value).exists():
-        raise ErrorHandler.get_error_exception(400, "invalid_user")

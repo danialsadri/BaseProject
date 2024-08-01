@@ -2,27 +2,27 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from jalali_date.admin import ModelAdminJalaliMixin
 from .forms import UserCreationForm, UserChangeForm
-from .models import User
+from .models import UserModel
 
 
-@admin.register(User)
+@admin.register(UserModel)
 class UserAdmin(ModelAdminJalaliMixin, BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
     list_display = [
-        'phone_number', 'national_code',
-        'first_name', 'last_name',
+        'phone_number', 'email', 'first_name', 'last_name',
         'is_active', 'is_staff', 'is_superuser'
     ]
     list_filter = ['is_active', 'is_staff', 'is_superuser']
-    search_fields = ['phone_number', 'national_code']
+    search_fields = ['phone_number', 'email']
     readonly_fields = ['login_time']
+    raw_id_fields = ['photo']
     filter_horizontal = ['groups', 'user_permissions']
 
     fieldsets = (
         ('اطلاعات', {'fields': [
-            'phone_number', 'national_code',
+            'phone_number', 'email',
             'first_name', 'last_name', 'photo',
             'password',
         ]}),
@@ -34,6 +34,6 @@ class UserAdmin(ModelAdminJalaliMixin, BaseUserAdmin):
 
     add_fieldsets = (
         (None, {'fields': [
-            'phone_number', 'national_code', 'password',
+            'phone_number', 'password',
         ]}),
     )

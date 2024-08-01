@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jsramblings/react-webpack-setup.git"
+    "url": ""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jsramblings/react-webpack-setup/issues"
+    "url": ""
   },
-  "homepage": "https://github.com/jsramblings/react-webpack-setup#readme",
+  "homepage": "",
   "devDependencies": {
     "@babel/core": "^7.18.2",
     "@babel/preset-env": "^7.18.2",

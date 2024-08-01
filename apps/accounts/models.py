@@ -22,8 +22,8 @@ class User(AbstractUser, BaseModel):
     REQUIRED_FIELDS = ['national_code']
 
     class Meta:
-        ordering = ['-created']
-        indexes = [models.Index(fields=['-created'])]
+        ordering = ['-created_at']
+        indexes = [models.Index(fields=['-created_at'])]
         verbose_name = 'کاربر'
         verbose_name_plural = 'کاربران'
 

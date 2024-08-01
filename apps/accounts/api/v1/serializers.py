@@ -50,7 +50,7 @@ class LoginSerializer(serializers.Serializer):
                 user, created = UserModel.objects.get_or_create(phone_number=phone_number)
                 user.login_time = timezone.now()
                 user.save()
-                return user
+                return {'user': user, 'created': created}
             raise ErrorHandler.get_error_exception(400, 'invalid_otp_code')
         raise ErrorHandler.get_error_exception(400, 'expired_otp_code')
 

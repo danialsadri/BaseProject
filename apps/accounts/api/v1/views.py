@@ -29,9 +29,10 @@ class LoginApiView(APIView):
         serializer = LoginSerializer(data=data)
         if serializer.is_valid(raise_exception=True):
             user = serializer.verify_code()
-            refresh = RefreshToken.for_user(user)
+            refresh = RefreshToken.for_user(user['user'])
             response = {
-                'user': user.id,
+                'user': user['user'].id,
+                'is_created_first': user['created'],
                 'message': 'با موفقیت وارد شدید',
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),

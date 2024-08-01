@@ -47,10 +47,10 @@ class LoginSerializer(serializers.Serializer):
         if user_cache and (time - user_cache.get('send_time')).total_seconds() <= 120:
             if user_cache.get('otp_code') == otp_code:
                 cache.delete(f'user-{phone_number}')
-                user, created = UserModel.objects.get_or_create(phone_number=phone_number)
+                user, is_created = UserModel.objects.get_or_create(phone_number=phone_number)
                 user.login_time = timezone.now()
                 user.save()
-                return {'user': user, 'created': created}
+                return user, is_created
             raise ErrorHandler.get_error_exception(400, 'invalid_otp_code')
         raise ErrorHandler.get_error_exception(400, 'expired_otp_code')
 

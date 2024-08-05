@@ -2,11 +2,12 @@ from django.contrib import admin
 from django.contrib.admin.models import LogEntry
 from django.contrib.sessions.models import Session
 from jalali_date import datetime2jalali, date2jalali
-from .models import ImageModel
+from jalali_date.admin import ModelAdminJalaliMixin
+from .models import ImageModel, FileModel
 
 
 @admin.register(Session)
-class SessionAdmin(admin.ModelAdmin):
+class SessionAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ['session_key', '_session_data', 'get_expire_date', 'get_expire_time']
     readonly_fields = ['_session_data']
 
@@ -39,4 +40,9 @@ class LogEntryAdmin(admin.ModelAdmin):
 
 @admin.register(ImageModel)
 class ImageAdmin(admin.ModelAdmin):
+    list_filter = ['created_at']
+
+
+@admin.register(FileModel)
+class FileAdmin(admin.ModelAdmin):
     list_filter = ['created_at']

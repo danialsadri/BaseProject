@@ -42,7 +42,18 @@ class ImageModel(BaseModel):
 
     class Meta:
         verbose_name = 'تصویر'
-        verbose_name_plural = 'تصاویر'
+        verbose_name_plural = 'تصویر ها'
 
     def __str__(self):
         return self.image.name
+
+
+class FileModel(BaseModel):
+    file = models.FileField(upload_to=file_upload_to, verbose_name='فایل')
+
+    class Meta:
+        verbose_name = 'فایل'
+        verbose_name_plural = 'فایل ها'
+
+    def __str__(self):
+        return self.file.name

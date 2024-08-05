@@ -25,6 +25,7 @@ THIRD_PARTY_APPS = [
 ]
 
 INSTALLED_APPS = [
+    'admin_persian',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

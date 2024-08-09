@@ -21,17 +21,13 @@ class SendCodeSerializer(serializers.Serializer):
 
     def check_user(self):
         phone_number = self.validated_data.get('phone_number')
-        user = None
         try:
             user = UserModel.objects.get(phone_number=phone_number)
-        except UserModel.DoesNotExist:
-            pass
-        if user:
             if user.is_active:
                 return self.send_code()
             else:
                 raise ErrorHandler.get_error_exception(400, 'not_is_active')
-        else:
+        except UserModel.DoesNotExist:
             return self.send_code()
 
 
@@ -53,6 +49,30 @@ class LoginSerializer(serializers.Serializer):
                 return user, is_created
             raise ErrorHandler.get_error_exception(400, 'invalid_otp_code')
         raise ErrorHandler.get_error_exception(400, 'expired_otp_code')
+
+
+class ReSendCodeSerializer(serializers.Serializer):
+    phone_number = serializers.CharField(validators=[validate_phone])
+
+    def send_code(self):
+        phone_number = self.validated_data.get('phone_number')
+        otp_code = random.randint(1000, 9999)
+        send_time = timezone.now()
+        cache.set(f'user-{phone_number}', {'otp_code': otp_code, 'send_time': send_time})
+        print({'otp_code': otp_code, 'send_time': send_time})
+        # send_sms_thread(phone_number, otp_code)
+        return otp_code
+
+    def check_user(self):
+        phone_number = self.validated_data.get('phone_number')
+        try:
+            user = UserModel.objects.get(phone_number=phone_number)
+            if user.is_active:
+                return self.send_code()
+            else:
+                raise ErrorHandler.get_error_exception(400, 'not_is_active')
+        except UserModel.DoesNotExist:
+            return self.send_code()
 
 
 class UserDetailsSerializer(serializers.ModelSerializer):

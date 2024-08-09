@@ -80,7 +80,7 @@ CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://redis:6379/0",
-        "TIMEOUT": 60,
+        "TIMEOUT": timedelta(days=1).total_seconds(),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -230,3 +230,7 @@ SITE_ID = 1
 
 CELERY_BROKER_URL = 'amqp://guest:guest@rabbitmq:5672/'
 CELERY_RESULT_BACKEND = 'rpc://'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_AGE = timedelta(weeks=1).total_seconds()
+CART_SESSION_ID = 'cart'

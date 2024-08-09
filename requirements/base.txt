@@ -23,6 +23,7 @@ django-celery-beat==2.6.0
 django-cors-headers==4.3.1
 django-filter==24.2
 django-jalali-date==1.1.2
+django-ratelimit==4.1.0
 django-redis==5.4.0
 django-timezone-field==6.1.0
 djangorestframework==3.15.1
@@ -87,3 +88,4 @@ virtualenv-clone==0.5.7
 wcwidth==0.2.13
 webencodings==0.5.1
 zipp==3.15.0
+
